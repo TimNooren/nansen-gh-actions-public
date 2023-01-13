@@ -27,6 +27,10 @@ on:
             HELM_VALUES:
               required: true
               type: string
+            HELM_ADDITIONAL_ARGS:
+              required: false
+              type: string
+              default: ""
 
 jobs:
     helm-upgrade:
@@ -56,4 +60,8 @@ jobs:
                 location: ${{ inputs.GKE_REGION }}
             - name: helm-upgrade
               id: helm-upgrade
-              run: helm upgrade ${{ inputs.HELM_RELEASE }} ${{ inputs.HELM_CHART_DIR }}/ --values ${{ inputs.HELM_VALUES }} --atomic --install
+              run: helm upgrade --install \
+                    ${{ inputs.HELM_RELEASE }} \
+                    ${{ inputs.HELM_CHART_DIR }}/ \
+                    --values ${{ inputs.HELM_VALUES }} \
+                    ${{ inputs.HELM_ADDITIONAL_ARGS }} --atomic
